@@ -13,7 +13,7 @@ final androidErrorRegex = RegExp(
 dynamic convertException(dynamic e) {
   if (e is! PlatformException) return e;
 
-  String code, message, details;
+  String? code, message, details;
   if (Platform.isAndroid) {
     code = androidErrorRegex.firstMatch(e.code)?.group(2);
     message = e.message;

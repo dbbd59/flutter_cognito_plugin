@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cognito_plugin/exception_serializer.dart';
 import 'package:flutter_cognito_plugin/exceptions.dart';
@@ -25,14 +24,13 @@ class Cognito {
   ];
 
   static bool shouldRetry(dynamic e, int tries) {
-    if (e is! CognitoException ||
-        (autoRetryLimit != null && tries > autoRetryLimit)) {
+    if (e is! CognitoException || (tries > autoRetryLimit)) {
       return false;
     }
 
     for (final rule in retryForExceptions) {
       if (e.runtimeType == rule.runtimeType &&
-          e.message.toUpperCase().contains(rule.message.toUpperCase())) {
+          e.message!.toUpperCase().contains(rule.message!.toUpperCase())) {
         return true;
       }
     }
@@ -124,10 +122,6 @@ class Cognito {
   ///
   /// If `null` is passed, then the existing callback will be removed, if any.
   static void registerCallback(OnUserStateChange onUserStateChange) {
-    if (onUserStateChange == null) {
-      PluginScaffold.removeCallHandlersWithName(channel, "userStateCallback");
-      return;
-    }
     PluginScaffold.setCallHandler(channel, "userStateCallback", (value) {
       onUserStateChange(UserState.values[value]);
     });
@@ -136,12 +130,12 @@ class Cognito {
   static Future<SignUpResult> signUp(
     String username,
     String password, [
-    Map<String, String> userAttributes,
+    Map<String, String>? userAttributes,
   ]) async {
     return SignUpResult.fromMsg(
       await invokeMethod("signUp", {
-        "username": username ?? "",
-        "password": password ?? "",
+        "username": username,
+        "password": password,
         "userAttributes": userAttributes ?? {},
       }),
     );
@@ -153,8 +147,8 @@ class Cognito {
   ) async {
     return SignUpResult.fromMsg(
       await invokeMethod("confirmSignUp", {
-        "username": username ?? "",
-        "confirmationCode": confirmationCode ?? "",
+        "username": username,
+        "confirmationCode": confirmationCode,
       }),
     );
   }
@@ -162,7 +156,7 @@ class Cognito {
   static Future<SignUpResult> resendSignUp(String username) async {
     return SignUpResult.fromMsg(
       await invokeMethod("resendSignUp", {
-        "username": username ?? "",
+        "username": username,
       }),
     );
   }
@@ -170,8 +164,8 @@ class Cognito {
   static Future<SignInResult> signIn(String username, String password) async {
     return SignInResult.fromMsg(
       await invokeMethod("signIn", {
-        "username": username ?? "",
-        "password": password ?? "",
+        "username": username,
+        "password": password,
       }),
     );
   }
@@ -181,8 +175,8 @@ class Cognito {
     String token,
   ) async {
     var value = await invokeMethod("federatedSignIn", {
-      "providerName": providerName ?? "",
-      "token": token ?? "",
+      "providerName": providerName,
+      "token": token,
     });
     return UserState.values[value];
   }
@@ -190,7 +184,7 @@ class Cognito {
   static Future<SignInResult> confirmSignIn(String confirmationCode) async {
     return SignInResult.fromMsg(
       await invokeMethod("confirmSignIn", {
-        "confirmationCode": confirmationCode ?? "",
+        "confirmationCode": confirmationCode,
       }),
     );
   }
@@ -199,15 +193,15 @@ class Cognito {
     String oldPassword,
     String newPassword,
   ) async {
-    var res = await invokeMethod("changePassword", {
-      "oldPassword": oldPassword ?? "",
-      "newPassword": newPassword ?? "",
+    await invokeMethod("changePassword", {
+      "oldPassword": oldPassword,
+      "newPassword": newPassword,
     });
   }
 
   static Future<ForgotPasswordResult> forgotPassword(String username) async {
     return ForgotPasswordResult.fromMsg(
-      await invokeMethod("forgotPassword", {"username": username ?? ""}),
+      await invokeMethod("forgotPassword", {"username": username}),
     );
   }
 
@@ -218,9 +212,9 @@ class Cognito {
   ) async {
     return ForgotPasswordResult.fromMsg(
       await invokeMethod("confirmForgotPassword", {
-        "username": username ?? "",
-        "newPassword": newPassword ?? "",
-        "confirmationCode": confirmationCode ?? "",
+        "username": username,
+        "newPassword": newPassword,
+        "confirmationCode": confirmationCode,
       }),
     );
   }
@@ -259,7 +253,7 @@ class Cognito {
     Map<String, String> userAttributes,
   ) async {
     List uL = await invokeMethod("updateUserAttributes", {
-      "userAttributes": userAttributes ?? {},
+      "userAttributes": userAttributes,
     });
     return List<UserCodeDeliveryDetails>.from(
       uL.map((u) {
@@ -288,9 +282,9 @@ class Cognito {
     return Credentials.fromMsg(await invokeMethod("getCredentials"));
   }
 
-  static Future<UserState> showSignIn({
-    @required String identityProvider,
-    @required List<String> scopes,
+  static Future<UserState?> showSignIn({
+    required String identityProvider,
+    required List<String> scopes,
   }) async {
     await invokeMethod("showSignIn", {
       "identityProvider": identityProvider,

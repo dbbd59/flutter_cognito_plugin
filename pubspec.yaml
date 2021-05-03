@@ -3,15 +3,17 @@ description: AWS Cognito plugin for flutter.
 version: 2.2.0
 author: Dev Aggarwal <devpxy@gmail.com>
 homepage: https://github.com/pycampers/flutter_cognito_plugin
+publish_to: none
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  plugin_scaffold: ^3.0.1
+  plugin_scaffold:
+    git: https://github.com/dbbd59/flutter-plugin-scaffold.git
   logging: ^1.0.1
 
 dev_dependencies:

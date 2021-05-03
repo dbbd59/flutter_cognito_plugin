@@ -70,7 +70,6 @@ class UserCodeDeliveryDetails {
         deliveryMedium = msg[2];
 
   factory UserCodeDeliveryDetails.fromMsg(List msg) {
-    if (msg.length < 3) return null;
     return UserCodeDeliveryDetails._internal(msg);
   }
 
@@ -86,7 +85,7 @@ class SignInResult {
   final SignInState signInState;
 
   /// Used to determine the type of challenge that is being present from the service
-  final Map<String, String> parameters;
+  final Map<String, String>? parameters;
   final UserCodeDeliveryDetails userCodeDeliveryDetails;
 
   @override

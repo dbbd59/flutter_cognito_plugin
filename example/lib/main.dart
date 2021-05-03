@@ -22,7 +22,7 @@ class Main extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   MyAppState createState() => MyAppState();
@@ -30,8 +30,8 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   var returnValue;
-  UserState userState;
-  double progress;
+  UserState? userState;
+  double? progress;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final attrsController = TextEditingController();
@@ -76,7 +76,6 @@ class MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    Cognito.registerCallback(null);
     super.dispose();
   }
 
@@ -104,7 +103,7 @@ class MyAppState extends State<MyApp> {
         progress = null;
       });
 
-      String value;
+      String? value;
       try {
         value = (await fn()).toString();
       } catch (e, stacktrace) {
@@ -156,7 +155,7 @@ class MyAppState extends State<MyApp> {
 
   signUp() {
     return [
-      RaisedButton(
+      ElevatedButton(
         child: Text("signUp(username, password)"),
         onPressed: onPressWrapper(() {
           final attrs = attrsController.text;
@@ -167,7 +166,7 @@ class MyAppState extends State<MyApp> {
           );
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("confirmSignUp(username, confirmationCode)"),
         onPressed: onPressWrapper(() {
           return Cognito.confirmSignUp(
@@ -176,7 +175,7 @@ class MyAppState extends State<MyApp> {
           );
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("resendSignUp(username)"),
         onPressed: onPressWrapper(() {
           return Cognito.resendSignUp(usernameController.text);
@@ -187,7 +186,7 @@ class MyAppState extends State<MyApp> {
 
   signIn() {
     return [
-      RaisedButton(
+      ElevatedButton(
         child: Text("signIn(username, password)"),
         onPressed: onPressWrapper(() {
           return Cognito.signIn(
@@ -196,19 +195,19 @@ class MyAppState extends State<MyApp> {
           );
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("confirmSignIn(confirmationCode)"),
         onPressed: onPressWrapper(() {
           return Cognito.confirmSignIn(confirmationCodeController.text);
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("signOut()"),
         onPressed: onPressWrapper(() {
           return Cognito.signOut();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("showSignIn()"),
         onPressed: onPressWrapper(() {
           return Cognito.showSignIn(
@@ -222,13 +221,13 @@ class MyAppState extends State<MyApp> {
 
   forgotPassword() {
     return [
-      RaisedButton(
+      ElevatedButton(
         child: Text("forgotPassword(username)"),
         onPressed: onPressWrapper(() {
           return Cognito.forgotPassword(usernameController.text);
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text(
           "confirmForgotPassword(username, newPassword, confirmationCode)",
         ),
@@ -245,42 +244,42 @@ class MyAppState extends State<MyApp> {
 
   utils() {
     return [
-      RaisedButton(
+      ElevatedButton(
         child: Text("getUsername()"),
         onPressed: onPressWrapper(() {
           return Cognito.getUsername();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("isSignedIn()"),
         onPressed: onPressWrapper(() {
           return Cognito.isSignedIn();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("getIdentityId()"),
         onPressed: onPressWrapper(() {
           return Cognito.getIdentityId();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("getTokens()"),
         onPressed: onPressWrapper(() {
           return Cognito.getTokens();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text('getCredentials()'),
         onPressed: onPressWrapper(() {
           return Cognito.getCredentials();
         }),
       ),
-      RaisedButton(
+      ElevatedButton(
         child: Text("copy access token"),
         onPressed: onPressWrapper(() async {
           var tokens = await Cognito.getTokens();
           Clipboard.setData(ClipboardData(text: tokens.accessToken));
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('copied access token to clipboard'),
             ),
@@ -307,7 +306,7 @@ class MyAppState extends State<MyApp> {
             ],
           ),
         ),
-        if (progress == null || progress > 0)
+        if (progress == null || progress! > 0)
           Column(
             children: <Widget>[
               LinearProgressIndicator(value: progress),
