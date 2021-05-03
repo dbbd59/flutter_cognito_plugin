@@ -84,21 +84,13 @@ class UserCodeDeliveryDetails {
 class SignInResult {
   final SignInState signInState;
 
-  /// Used to determine the type of challenge that is being present from the service
-  final Map<String, String>? parameters;
-  final UserCodeDeliveryDetails userCodeDeliveryDetails;
-
   @override
   String toString() {
-    return "SignInResult { signInState: $signInState, parameters: $parameters, "
-        "userCodeDeliveryDetails: $userCodeDeliveryDetails }";
+    return "SignInResult { signInState: $signInState, parameters: , "
+        "userCodeDeliveryDetails:  }";
   }
 
-  SignInResult.fromMsg(List msg)
-      : signInState = SignInState.values[msg[0]],
-        parameters = (msg[1] == null) ? null : Map<String, String>.from(msg[1]),
-        userCodeDeliveryDetails =
-            UserCodeDeliveryDetails.fromMsg(msg.sublist(2));
+  SignInResult.fromMsg(List msg) : signInState = SignInState.values[msg[0]];
 }
 
 /// The result of a sign up action. Check the confirmation state and delivery details to proceed.
