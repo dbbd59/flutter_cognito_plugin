@@ -128,93 +128,93 @@ class Cognito {
   }
 
   static Future<SignUpResult> signUp(
-    String username,
-    String password, [
+    String? username,
+    String? password, [
     Map<String, String>? userAttributes,
   ]) async {
     return SignUpResult.fromMsg(
       await invokeMethod("signUp", {
-        "username": username,
-        "password": password,
+        "username": username ?? "",
+        "password": password ?? "",
         "userAttributes": userAttributes ?? {},
       }),
     );
   }
 
   static Future<SignUpResult> confirmSignUp(
-    String username,
-    String confirmationCode,
+    String? username,
+    String? confirmationCode,
   ) async {
     return SignUpResult.fromMsg(
       await invokeMethod("confirmSignUp", {
-        "username": username,
-        "confirmationCode": confirmationCode,
+        "username": username ?? "",
+        "confirmationCode": confirmationCode ?? "",
       }),
     );
   }
 
-  static Future<SignUpResult> resendSignUp(String username) async {
+  static Future<SignUpResult> resendSignUp(String? username) async {
     return SignUpResult.fromMsg(
       await invokeMethod("resendSignUp", {
-        "username": username,
+        "username": username ?? "",
       }),
     );
   }
 
-  static Future<SignInResult> signIn(String username, String password) async {
+  static Future<SignInResult> signIn(String? username, String? password) async {
     return SignInResult.fromMsg(
       await invokeMethod("signIn", {
-        "username": username,
-        "password": password,
+        "username": username ?? "",
+        "password": password ?? "",
       }),
     );
   }
 
   static Future<UserState> federatedSignIn(
-    String providerName,
-    String token,
+    String? providerName,
+    String? token,
   ) async {
     var value = await invokeMethod("federatedSignIn", {
-      "providerName": providerName,
-      "token": token,
+      "providerName": providerName ?? "",
+      "token": token ?? "",
     });
     return UserState.values[value];
   }
 
-  static Future<SignInResult> confirmSignIn(String confirmationCode) async {
+  static Future<SignInResult> confirmSignIn(String? confirmationCode) async {
     return SignInResult.fromMsg(
       await invokeMethod("confirmSignIn", {
-        "confirmationCode": confirmationCode,
+        "confirmationCode": confirmationCode ?? "",
       }),
     );
   }
 
   static Future<void> changePassword(
-    String oldPassword,
-    String newPassword,
+    String? oldPassword,
+    String? newPassword,
   ) async {
     await invokeMethod("changePassword", {
-      "oldPassword": oldPassword,
-      "newPassword": newPassword,
+      "oldPassword": oldPassword ?? "",
+      "newPassword": newPassword ?? "",
     });
   }
 
-  static Future<ForgotPasswordResult> forgotPassword(String username) async {
+  static Future<ForgotPasswordResult> forgotPassword(String? username) async {
     return ForgotPasswordResult.fromMsg(
-      await invokeMethod("forgotPassword", {"username": username}),
+      await invokeMethod("forgotPassword", {"username": username ?? ""}),
     );
   }
 
   static Future<ForgotPasswordResult> confirmForgotPassword(
-    String username,
-    String newPassword,
-    String confirmationCode,
+    String? username,
+    String? newPassword,
+    String? confirmationCode,
   ) async {
     return ForgotPasswordResult.fromMsg(
       await invokeMethod("confirmForgotPassword", {
-        "username": username,
-        "newPassword": newPassword,
-        "confirmationCode": confirmationCode,
+        "username": username ?? "",
+        "newPassword": newPassword ?? "",
+        "confirmationCode": confirmationCode ?? "",
       }),
     );
   }
@@ -250,10 +250,10 @@ class Cognito {
   }
 
   static Future<List<UserCodeDeliveryDetails>> updateUserAttributes(
-    Map<String, String> userAttributes,
+    Map<String, String>? userAttributes,
   ) async {
     List uL = await invokeMethod("updateUserAttributes", {
-      "userAttributes": userAttributes,
+      "userAttributes": userAttributes ?? {},
     });
     return List<UserCodeDeliveryDetails>.from(
       uL.map((u) {
