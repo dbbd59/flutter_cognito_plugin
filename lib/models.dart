@@ -123,16 +123,14 @@ class SignUpResult {
 /// The result of a forgot password action
 class ForgotPasswordResult {
   final ForgotPasswordState state;
-  final UserCodeDeliveryDetails parameters;
 
   @override
   String toString() {
-    return "ForgotPasswordResult { state: $state, parameters: $parameters }";
+    return "ForgotPasswordResult { state: $state, parameters: }";
   }
 
   ForgotPasswordResult.fromMsg(List msg)
-      : state = ForgotPasswordState.values[msg[0]],
-        parameters = UserCodeDeliveryDetails.fromMsg(msg.sublist(1));
+      : state = ForgotPasswordState.values[msg[0]];
 }
 
 /// A container for different types of [Token]s.
