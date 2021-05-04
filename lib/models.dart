@@ -98,18 +98,14 @@ class SignUpResult {
   /// - [true] -> user is confirmed, no further action is necessary.
   /// - [false] -> check delivery details and call [confirmSignUp()].
   final bool confirmationState;
-  final UserCodeDeliveryDetails userCodeDeliveryDetails;
 
   @override
   String toString() {
     return "SignUpResult { confirmationState: $confirmationState, "
-        "userCodeDeliveryDetails: $userCodeDeliveryDetails }";
+        "userCodeDeliveryDetails: }";
   }
 
-  SignUpResult.fromMsg(List msg)
-      : confirmationState = msg[0],
-        userCodeDeliveryDetails =
-            UserCodeDeliveryDetails.fromMsg(msg.sublist(1));
+  SignUpResult.fromMsg(List msg) : confirmationState = msg[0];
 }
 
 /// The result of a forgot password action
